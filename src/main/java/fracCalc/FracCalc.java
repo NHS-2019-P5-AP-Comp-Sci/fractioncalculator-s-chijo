@@ -9,27 +9,23 @@ import java.util.*;
 public class FracCalc {
 
 	public static void main(String[] args) {
-		
-		while(true)	{
+
+		while (true) {
 			Scanner userInput = new Scanner(System.in);
-			System.out.println("Add, subtract, multiply, or divide fractions: ");
-			String input = userInput.nextLine();
-			
-			produceAnswer(input);   
-			System.out.println("If you want to quit now, just type in \"quit\" ");
-			String exit = userInput.nextLine();     //Takes user input 
-			
-			if(exit.equals("quit")) { //Method for users to quit the program
-				System.exit(0);     
-	
-		}
+			System.out.println("Type \"quit\" to quit at any time. Add, subtract, multiply, or divide fractions: ");
+			String input = userInput.nextLine(); // Takes user input
+			if (input.equalsIgnoreCase("quit")) {
+				System.exit(0); // Quits program based on user input
+			} else {
+				produceAnswer(input); //runs program based on user input
+			}
 		}
 
 	}
 
 	private static void While(boolean b) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	// ** IMPORTANT ** DO NOT DELETE THIS FUNCTION. This function will be used to
@@ -43,19 +39,53 @@ public class FracCalc {
 	// The function should return the result of the fraction after it has been
 	// calculated
 	// e.g. return ==> "1_1/4"
-	public static String produceAnswer(String input) {
-		// TODO: Implement this function to produce the solution to the input
-		int space = input.indexOf(" ");    
-    	String first = input.substring(0 , space);    //The first operand from the user input
-    	String operator = input.substring(space + 1, space + 2);    //The operator between the operands
-    	String second = input.substring(space + 3);   //The second operand from the user input
-   
-    	
-        return second; //returns the second operand
+	public static String produceAnswer(String values) {
+		int space = values.indexOf(" ");
+		String first = values.substring(0, space);
+		String operator = values.substring(space + 1, space + 2);
+		String second = values.substring(space + 3);
+	
 		
+		int whole = whole(second);
+		int numerator = numerator(second);
+		int denominator = denominator(second);
+		String numbers = "whole:" + whole + " numerator:" + numerator + " denominator:" + denominator;
+		System.out.println(numbers);
+		return(numbers);
+	}
+	public static int numerator(String input) {
+		int firstUnderScore = input.indexOf('_');
+		int divisionSymbol = input.indexOf('/');
+		if (divisionSymbol == -1) {
+			return 0;
+		} else {
+			String numerator = input.substring(firstUnderScore + 1, divisionSymbol);
+			return Integer.parseInt(numerator);
+		}
 	}
 
-	// TODO: Fill in the space below with any helper methods that you think you will
-	// need
+	public static int denominator(String input) {
+		int divisionSymbol = input.indexOf('/');
+		if (divisionSymbol == -1) {
+			return 1;
+		} else {
+			String denominator = input.substring(divisionSymbol + 1);
+			return Integer.parseInt(denominator);
+		}
+		}
+		public static int whole(String input) {
+			int firstUnderScore = input.indexOf('_');
+			int divisionSymbol = input.indexOf('/');
+			if (firstUnderScore == -1 && divisionSymbol == -1) {
+				return Integer.parseInt(input);
+			} else if (firstUnderScore <= 0) {
+				return 0;
+			} else {
+				String stringWholeNumber = input.substring(0, firstUnderScore);
+				return Integer.parseInt(stringWholeNumber);
+	}
+
+		
+	}
 
 }
