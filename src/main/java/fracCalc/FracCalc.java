@@ -11,13 +11,13 @@ public class FracCalc {
 	public static void main(String[] args) {
 
 		while (true) {
-			Scanner userInput = new Scanner(System.in);
+			Scanner uservalue = new Scanner(System.in);
 			System.out.println("Type \"quit\" to quit at any time. Add, subtract, multiply, or divide fractions: ");
-			String input = userInput.nextLine(); // Takes user input
-			if (input.equalsIgnoreCase("quit")) {
-				System.exit(0); // Quits program based on user input
+			String values = uservalue.nextLine(); // Takes user values
+			if (values.equalsIgnoreCase("quit")) {
+				System.exit(0); // Quits program based on user values
 			} else {
-				produceAnswer(input); //runs program based on user input
+				produceAnswer(values); // runs program based on user values
 			}
 		}
 
@@ -30,62 +30,91 @@ public class FracCalc {
 
 	// ** IMPORTANT ** DO NOT DELETE THIS FUNCTION. This function will be used to
 	// test your code
-	// This function takes a String 'input' and produces the result
+	// This function takes a String 'values' and produces the result
 	//
-	// input is a fraction string that needs to be evaluated. For your program, this
-	// will be the user input.
-	// e.g. input ==> "1/2 + 3/4"
+	// values is a fraction string that needs to be evaluated. For your program,
+	// this
+	// will be the user values.
+	// e.g. values ==> "1/2 + 3/4"
 	//
 	// The function should return the result of the fraction after it has been
 	// calculated
 	// e.g. return ==> "1_1/4"
+
 	public static String produceAnswer(String values) {
 		int space = values.indexOf(" ");
-		String first = values.substring(0, space);
-		String operator = values.substring(space + 1, space + 2);
-		String second = values.substring(space + 3);
+		String equation1 = values.substring(0, space);
+		String symbol = values.substring(space + 1, space + 2);
+		String equation2 = values.substring(space + 3);
+		String two = negative(equation2);
+		String one = negative(equation1);
+		int numerator1 = Integer.parseInt(one.substring(0, one.indexOf('/')));
+		int denominator1 = Integer.parseInt(one.substring(one.indexOf('/') + 1));
+		int numerator2 = Integer.parseInt(two.substring(0, two.indexOf('/')));
+		int denominator2 = Integer.parseInt(two.substring(two.indexOf('/') + 1));
+		if (symbol.equals("-")) {
+			String numerator = (numerator1 * denominator2) - (numerator2 * denominator1) + "";
+
+			String denominator = denominator1 * denominator2 + "";
+			String result = numerator + "/" + denominator;
+
+			return result;
+
+		} else if (symbol.equals("+")) {
+			String numerator = (numerator1 * denominator2) + (numerator2 * denominator1) + "";
+
+			String denominator = denominator1 * denominator2 + "";
+			String result = numerator + "/" + denominator;
+
+			return result;
+
+		} else if (symbol.equals("*")) {
+			String numerator = numerator1 * numerator2 + "";
+			String denominator = denominator1 * denominator2 + "";
+			String result = numerator + "/" + denominator;
+
+			return result;
+
+		} else {
+			String numerator = numerator1 * denominator2 + "";
+			String denominator = denominator1 * numerator2 + "";
+			String result = numerator + "/" + denominator;
+
+			return result;
+
+		} 
+
+		}
 	
-		
-		int whole = whole(second);
-		int numerator = numerator(second);
-		int denominator = denominator(second);
-		String numbers = "whole:" + whole + " numerator:" + numerator + " denominator:" + denominator;
-		System.out.println(numbers);
-		return(numbers);
-	}
-	public static int numerator(String input) {
-		int firstUnderScore = input.indexOf('_');
-		int divisionSymbol = input.indexOf('/');
-		if (divisionSymbol == -1) {
-			return 0;
+	public static String negative(String equation) {
+		String wholeNum;
+		String numerator;
+		String denominator;
+		if (equation.indexOf('_') != -1) {
+			wholeNum = equation.substring(0, equation.indexOf('_'));
+		} else if (equation.indexOf('/') != -1) {
+			wholeNum = "0";
 		} else {
-			String numerator = input.substring(firstUnderScore + 1, divisionSymbol);
-			return Integer.parseInt(numerator);
+			wholeNum = equation.substring(0, equation.length());
 		}
-	}
-
-	public static int denominator(String input) {
-		int divisionSymbol = input.indexOf('/');
-		if (divisionSymbol == -1) {
-			return 1;
-		} else {
-			String denominator = input.substring(divisionSymbol + 1);
-			return Integer.parseInt(denominator);
+		if (equation.indexOf('/') != -1) {
+			numerator = equation.substring(equation.indexOf('_') + 1, equation.indexOf('/'));
+			denominator = equation.substring(equation.indexOf('/') + 1);
 		}
+		else {
+			numerator = "0";
+			denominator = "1";
 		}
-		public static int whole(String input) {
-			int firstUnderScore = input.indexOf('_');
-			int divisionSymbol = input.indexOf('/');
-			if (firstUnderScore == -1 && divisionSymbol == -1) {
-				return Integer.parseInt(input);
-			} else if (firstUnderScore <= 0) {
-				return 0;
-			} else {
-				String stringWholeNumber = input.substring(0, firstUnderScore);
-				return Integer.parseInt(stringWholeNumber);
+		if (wholeNum.length() > 0) {
+			if (wholeNum.substring(0, 1).equals("-")) {
+				numerator = "-" + (Integer.parseInt(denominator) * Integer.parseInt(wholeNum.substring(1))
+						+ Integer.parseInt(numerator));
+			} else if (!wholeNum.substring(0, 1).equals("-")) {
+				
+				numerator = Integer.parseInt(denominator) * Integer.parseInt(wholeNum) + Integer.parseInt(numerator)
+						+ "";
+			}
+		}
+		return numerator + "/" + denominator;
 	}
-
-		
-	}
-
 }
